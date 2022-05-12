@@ -15,7 +15,7 @@ export class ContentComponent {
   public animate;
 
   // Private
-  private _unsubscribeAll: Subject<any>;
+  private _unsubscribeAll: Subject<void>;
 
   /**
    * Constructor

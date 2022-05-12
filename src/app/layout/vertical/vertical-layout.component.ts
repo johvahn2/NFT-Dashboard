@@ -15,7 +15,7 @@ export class VerticalLayoutComponent implements OnInit, OnDestroy {
   coreConfig: any;
 
   // Private
-  private _unsubscribeAll: Subject<any>;
+  private _unsubscribeAll: Subject<void>;
 
   /**
    * Constructor

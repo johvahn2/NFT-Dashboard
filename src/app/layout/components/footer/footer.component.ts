@@ -14,7 +14,7 @@ export class FooterComponent implements OnInit, OnDestroy {
   public year: number = new Date().getFullYear();
 
   // Private
-  private _unsubscribeAll: Subject<any>;
+  private _unsubscribeAll: Subject<void>;
 
   /**
    * Constructor

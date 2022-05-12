@@ -19,7 +19,7 @@ export class CoreThemeCustomizerComponent implements OnInit, OnDestroy {
   form: FormGroup;
 
   // Private
-  private _unsubscribeAll: Subject<any>;
+  private _unsubscribeAll: Subject<void>;
 
   /**
    * Constructor

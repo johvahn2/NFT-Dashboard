@@ -23,7 +23,7 @@ export class CoreMenuVerticalCollapsibleComponent implements OnInit, OnDestroy {
   public isOpen = false;
 
   // Private
-  private _unsubscribeAll: Subject<any>;
+  private _unsubscribeAll: Subject<void>;
 
   /**
    * Constructor

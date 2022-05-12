@@ -14,7 +14,7 @@ export class ErrorComponent implements OnInit {
   public coreConfig: any;
 
   // Private
-  private _unsubscribeAll: Subject<any>;
+  private _unsubscribeAll: Subject<void>;
 
   /**
    * Constructor

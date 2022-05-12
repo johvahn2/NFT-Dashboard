@@ -31,7 +31,7 @@ export class AppComponent implements OnInit, OnDestroy {
   appLanguage: 'en'; // Set application default language i.e fr
 
   // Private
-  private _unsubscribeAll: Subject<any>;
+  private _unsubscribeAll: Subject<void>;
 
   /**
    * Constructor

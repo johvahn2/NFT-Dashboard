@@ -18,7 +18,7 @@ export class HorizontalMenuComponent implements OnInit, OnDestroy {
   menu: any;
 
   // Private
-  private _unsubscribeAll: Subject<any>;
+  private _unsubscribeAll: Subject<void>;
 
   /**
    * Constructor

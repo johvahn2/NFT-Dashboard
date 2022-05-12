@@ -12,7 +12,7 @@ import { User } from 'app/auth/models';
 export class CoreMenuService {
   currentUser: User;
   onItemCollapsed: Subject<any>;
-  onItemCollapseToggled: Subject<any>;
+  onItemCollapseToggled: Subject<void>;
 
   // Private
   private _onMenuRegistered: BehaviorSubject<any>;

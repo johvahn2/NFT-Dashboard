@@ -61,7 +61,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   // Private
-  private _unsubscribeAll: Subject<any>;
+  private _unsubscribeAll: Subject<void>;
 
   /**
    * Constructor

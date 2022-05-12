@@ -22,7 +22,7 @@ export class CoreMenuComponent implements OnInit {
   menu: any;
 
   // Private
-  private _unsubscribeAll: Subject<any>;
+  private _unsubscribeAll: Subject<void>;
 
   /**
    *

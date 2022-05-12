@@ -9,6 +9,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { ToastrModule } from 'ngx-toastr'; // For auth after login toast
 
+import { HdWalletAdapterModule } from '@heavy-duty/wallet-adapter';
+
 import { CoreModule } from '@core/core.module';
 import { CoreCommonModule } from '@core/common.module';
 import { CoreSidebarModule, CoreThemeCustomizerModule } from '@core/components';
@@ -46,6 +48,7 @@ const appRoutes: Routes = [
       relativeLinkResolution: 'legacy'
     }),
     TranslateModule.forRoot(),
+    HdWalletAdapterModule.forRoot({ autoConnect: true }),
 
     //NgBootstrap
     NgbModule,

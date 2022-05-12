@@ -28,7 +28,7 @@ export class CoreMenuHorizontalCollapsibleComponent implements OnInit, OnDestroy
   item: any;
 
   // Private
-  private _unsubscribeAll: Subject<any>;
+  private _unsubscribeAll: Subject<void>;
 
   /**
    * Constructor

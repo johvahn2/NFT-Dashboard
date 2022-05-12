@@ -23,7 +23,7 @@ export class AuthLoginV2Component implements OnInit {
   public passwordTextType: boolean;
 
   // Private
-  private _unsubscribeAll: Subject<any>;
+  private _unsubscribeAll: Subject<void>;
 
   /**
    * Constructor

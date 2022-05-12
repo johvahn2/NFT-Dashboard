@@ -87,7 +87,7 @@ export class CoreSidebarComponent implements OnInit, OnDestroy {
   private _wasCollapsed: boolean;
   private _animationPlayer: AnimationPlayer;
   private _overlay: HTMLElement | null = null;
-  private _unsubscribeAll: Subject<any>;
+  private _unsubscribeAll: Subject<void>;
 
   /**
    * Constructor

@@ -22,7 +22,7 @@ export class VerticalMenuComponent implements OnInit, OnDestroy {
   isScrolled: boolean = false;
 
   // Private
-  private _unsubscribeAll: Subject<any>;
+  private _unsubscribeAll: Subject<void>;
 
   /**
    * Constructor
