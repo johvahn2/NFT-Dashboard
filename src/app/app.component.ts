@@ -290,15 +290,6 @@ export class AppComponent implements OnInit, OnDestroy {
       new SolflareWalletAdapter(),
       new SolongWalletAdapter(),
     ]);
-
-
-    // this._hdWalletStore.selectWallet(PhantomWalletName);
   }
 
-  modalOpenPrimary(modalPrimary) {
-    this.modalService.open(modalPrimary, {
-      centered: true,
-      windowClass: 'modal modal-primary'
-    });
-  }
 }

@@ -16,10 +16,22 @@
     <!-- Modal -->
     <ng-template #walletModal let-modal let-d="dismiss">
       <div class="modal-body wallet-wrap" tabindex="0" ngbAutofocus>
-        <img class="wallet-logo" src="assets/images/logo/dazedduck.png" alt="" srcset="">
-        <p>Tart lemon drops macaroon oat cake chocolate toffee chocolate bar icing. Pudding jelly beans carrot cake pastry
-          gummies cheesecake lollipop. I love cookie lollipop cake I love sweet gummi bears cupcake dessert.</p>
-      </div>
+        <div class="">
+          <div class="wallet-head">
+            <img class="wallet-logo" src="assets/images/logo/dazedduck.png" alt="" srcset="">
+            <p class="title">Connect your Solana wallet to access the Dazed Ducks dashboard.</p>
+          </div>
+  
+            <ul class="wallet-btns">
+              <li (click)="walletConnect()">
+                <img src="assets/images/illustration/phantom logo.svg" alt="Phantom">
+                <p>Phantom</p>
+              </li>
+            </ul>
+        </div>
+
+        </div>
+
     </ng-template>
     <!-- / Modal -->
 
