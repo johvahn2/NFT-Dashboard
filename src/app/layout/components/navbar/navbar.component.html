@@ -51,22 +51,27 @@
 
     <!-- User Dropdown -->
     <li ngbDropdown class="nav-item dropdown-user">
-      <a
-        class="nav-link dropdown-toggle dropdown-user-link"
-        id="dropdown-user"
-        ngbDropdownToggle
-        id="navbarUserDropdown"
-        aria-haspopup="true"
-        aria-expanded="false">
+
+      <div *ngIf="publicKey$ | async as publicKey">
+        <a
+          class="nav-link dropdown-toggle dropdown-user-link"
+          id="dropdown-user"
+          ngbDropdownToggle
+          id="navbarUserDropdown"
+          aria-haspopup="true"
+          aria-expanded="false">
         
-      <button type="button" class="btn btn-primary" rippleEffect>{{walletAddress | slice:0:11}}... </button>
-      </a>
-      <div ngbDropdownMenu aria-labelledby="navbarUserDropdown" class="dropdown-menu dropdown-menu-right">
-        <a ngbDropdownItem [routerLink]="['/']">Copy Address</a
-        ><a ngbDropdownItem [routerLink]="['/']">Different Wallet</a>
-        <div class="dropdown-divider"></div>
-        <a ngbDropdownItem>Disconnect</a>
+          
+        <button type="button" class="btn btn-primary" rippleEffect>{{convertToString(publicKey) | slice:0:11}}... </button>
+        </a>
+        <div ngbDropdownMenu aria-labelledby="navbarUserDropdown" class="dropdown-menu dropdown-menu-right">
+          <a ngbDropdownItem (click)="copyToClipboard(convertToString(publicKey))">Copy Address</a
+          ><a ngbDropdownItem (click)="disconnectWallet()">Different Wallet</a>
+          <div class="dropdown-divider"></div>
+          <a ngbDropdownItem (click)="disconnectWallet()">Disconnect</a>
+        </div>
       </div>
+      
     </li>
     <!--/ User Dropdown -->
   </ul>

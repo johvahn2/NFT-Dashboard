@@ -16,6 +16,8 @@ import { User } from 'app/auth/models';
 import { coreConfig } from 'app/app-config';
 import { Router } from '@angular/router';
 
+import { ConnectionStore, Wallet, WalletStore } from '@heavy-duty/wallet-adapter';
+
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -24,7 +26,9 @@ import { Router } from '@angular/router';
 })
 export class NavbarComponent implements OnInit, OnDestroy {
 
-  walletAddress = "3hxVwxx21UD1Af5MTt4wqFL4WpgzRRmANnniT53USi4p";
+  walletAddress = "";
+  readonly publicKey$ = this._hdWalletStore.publicKey$;
+
   public horizontalMenu: boolean;
   public hiddenMenu: boolean;
 
@@ -62,6 +66,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
   }
 
+
+
   // Private
   private _unsubscribeAll: Subject<void>;
 
@@ -83,7 +89,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private _coreMediaService: CoreMediaService,
     private _coreSidebarService: CoreSidebarService,
     private _mediaObserver: MediaObserver,
-    public _translateService: TranslateService
+    public _translateService: TranslateService,
+    private readonly _hdConnectionStore: ConnectionStore,
+    private readonly _hdWalletStore: WalletStore,
   ) {
     this._authenticationService.currentUser.subscribe(x => (this.currentUser = x));
 
@@ -225,4 +233,46 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this._unsubscribeAll.next();
     this._unsubscribeAll.complete();
   }
+
+  convertToString(data:any){
+    return data.toString();
+  }
+
+  disconnectWallet(){
+    this._hdWalletStore.disconnect().subscribe();
+  }
+
+
+
+  copyToClipboard(text) {
+    if (!navigator.clipboard) {
+        return this.fallbackCopyTextToClipboard(text);
+    }
+    return navigator.clipboard.writeText(text)
+  }
+
+
+  fallbackCopyTextToClipboard(text) {
+    return new Promise((resolve, reject) => {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+
+        textArea.style.top = "0";
+        textArea.style.left = "0";
+        textArea.style.position = "fixed";
+
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        const status = document.execCommand('copy');
+        document.body.removeChild(textArea);
+        if(status){
+            resolve(status)
+        }else{
+            reject(status)
+        }
+    })
+  }
+
+  
 }
