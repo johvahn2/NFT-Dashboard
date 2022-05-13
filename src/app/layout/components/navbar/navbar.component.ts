@@ -23,6 +23,8 @@ import { Router } from '@angular/router';
   encapsulation: ViewEncapsulation.None
 })
 export class NavbarComponent implements OnInit, OnDestroy {
+
+  walletAddress = "3hxVwxx21UD1Af5MTt4wqFL4WpgzRRmANnniT53USi4p";
   public horizontalMenu: boolean;
   public hiddenMenu: boolean;
 

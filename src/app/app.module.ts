@@ -23,13 +23,13 @@ import { SampleModule } from 'app/main/sample/sample.module';
 
 const appRoutes: Routes = [
   {
-    path: 'pages',
-    loadChildren: () => import('./main/pages/pages.module').then(m => m.PagesModule)
+    path: '',
+    redirectTo: '/dashboard',
+    pathMatch: 'full'
   },
   {
     path: '',
-    redirectTo: '/home',
-    pathMatch: 'full'
+    loadChildren: () => import('./main/pages/pages.module').then(m => m.PagesModule)
   },
   {
     path: '**',
@@ -62,7 +62,7 @@ const appRoutes: Routes = [
 
     // App modules
     LayoutModule,
-    SampleModule
+    // SampleModule
   ],
 
   bootstrap: [AppComponent]
