@@ -18,7 +18,8 @@ import { PublicKey } from "@solana/web3.js";
     cluster = 'https://api.devnet.solana.com';
 
     public static connected$ = of(false);
-    public static publicKey$;
+    public static publicKey$ = new Observable<PublicKey>();
+    public static nfts = new BehaviorSubject(null);
 
     constructor(
       private readonly _hdConnectionStore: ConnectionStore,

@@ -23,6 +23,11 @@ import { locale as menuPortuguese } from 'app/menu/i18n/pt';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { WalletService } from '@core/services/wallet.service';
 
+import {
+  resolveToWalletAddress,
+  getParsedNftAccountsByOwner,
+} from "@nfteyez/sol-rayz";
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -97,7 +102,18 @@ export class AppComponent implements OnInit, OnDestroy {
     // Init wave effect (Ripple effect)
     Waves.init();
 
+    //Init Wallet Service
     this.walletService.init();
+
+    //Fetch User NFTs
+    WalletService.publicKey$.subscribe(async pub => {
+      if(!pub) return;
+      let nftArray = await getParsedNftAccountsByOwner({publicAddress: pub.toString()});
+      if(nftArray){
+        WalletService.nfts.next(nftArray);
+      }
+    });
+    
 
     // Subscribe to config changes
     this._coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
