@@ -19,6 +19,18 @@ import { locale as menuFrench } from 'app/menu/i18n/fr';
 import { locale as menuGerman } from 'app/menu/i18n/de';
 import { locale as menuPortuguese } from 'app/menu/i18n/pt';
 
+
+//Solana Wallet
+import { ConnectionStore, WalletStore } from '@heavy-duty/wallet-adapter';
+import {
+  PhantomWalletAdapter,
+  PhantomWalletName,
+  SlopeWalletAdapter,
+  SolflareWalletAdapter,
+  SolongWalletAdapter,
+} from '@solana/wallet-adapter-wallets';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -57,7 +69,10 @@ export class AppComponent implements OnInit, OnDestroy {
     private _coreLoadingScreenService: CoreLoadingScreenService,
     private _coreMenuService: CoreMenuService,
     private _coreTranslationService: CoreTranslationService,
-    private _translateService: TranslateService
+    private _translateService: TranslateService,
+    private readonly _hdConnectionStore: ConnectionStore,
+    private readonly _hdWalletStore: WalletStore,
+    private modalService: NgbModal
   ) {
     // Get the application main menu
     this.menu = menu;
@@ -90,6 +105,8 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // Init wave effect (Ripple effect)
     Waves.init();
+
+    this.WalletInit();
 
     // Subscribe to config changes
     this._coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
@@ -258,5 +275,30 @@ export class AppComponent implements OnInit, OnDestroy {
    */
   toggleSidebar(key): void {
     this._coreSidebarService.getSidebarRegistry(key).toggleOpen();
+  }
+
+
+  /**
+   * Wallet Connection
+   */
+
+  WalletInit(){
+    this._hdConnectionStore.setEndpoint('https://api.devnet.solana.com');
+    this._hdWalletStore.setAdapters([
+      new PhantomWalletAdapter(),
+      new SlopeWalletAdapter(),
+      new SolflareWalletAdapter(),
+      new SolongWalletAdapter(),
+    ]);
+
+
+    // this._hdWalletStore.selectWallet(PhantomWalletName);
+  }
+
+  modalOpenPrimary(modalPrimary) {
+    this.modalService.open(modalPrimary, {
+      centered: true,
+      windowClass: 'modal modal-primary'
+    });
   }
 }

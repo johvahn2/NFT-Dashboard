@@ -16,9 +16,9 @@ import { CoreConfig } from '@core/types';
 // prettier-ignore
 export const coreConfig: CoreConfig = {
   app: {
-    appName     : 'Vuexy',                                        // App Name
-    appTitle    : 'Vuexy - Angular 13+ Bootstrap Admin Template', // App Title
-    appLogoImage: 'assets/images/logo/logo.svg',                  // App Logo
+    appName     : 'Dazed Ducks',         // App Name
+    appTitle    : 'Dazed Ducks - Dashboard Demo', // App Title
+    appLogoImage: 'assets/images/logo/dazedduck.png',                  // App Logo
     appLanguage : 'en',                                           // App Default Language (en, fr, de, pt etc..)
   },
   layout: {
