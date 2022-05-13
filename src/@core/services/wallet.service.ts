@@ -1,27 +1,49 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, Observable } from 'rxjs';
+import { ConnectionStore, WalletStore } from "@heavy-duty/wallet-adapter";
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import {
+  PhantomWalletAdapter,
+  PhantomWalletName,
+  SlopeWalletAdapter,
+  SolflareWalletAdapter,
+  SolongWalletAdapter,
+} from '@solana/wallet-adapter-wallets';
+import { PublicKey } from "@solana/web3.js";
 
 @Injectable({
     providedIn: 'root'
   })
   export class WalletService {
+  
+    cluster = 'https://api.devnet.solana.com';
 
-    private _walletSubject: BehaviorSubject<IWallet>;
+    public static connected$ = of(false);
+    public static publicKey$;
 
-    constructor() {}
+    constructor(
+      private readonly _hdConnectionStore: ConnectionStore,
+      private readonly _hdWalletStore: WalletStore,
+    ){
+      WalletService.connected$ = this._hdWalletStore.connected$;
+      WalletService.publicKey$ = this._hdWalletStore.publicKey$;
+    }
 
- // Set the wallet
-  set wallet(data: IWallet) {
-    this._walletSubject.next(data);
-  }
 
-  get wallet(): any | Observable<IWallet> {
-    return this._walletSubject.asObservable();
-  }
 
-}
 
-export interface IWallet {
-  name: undefined,
-  publicKey: undefined
+
+    init(){
+      this._hdConnectionStore.setEndpoint(this.cluster);
+      this._hdWalletStore.setAdapters([
+        new PhantomWalletAdapter(),
+        new SlopeWalletAdapter(),
+        new SolflareWalletAdapter(),
+        new SolongWalletAdapter(),
+      ]);
+    }
+
+    disconnect(){
+      return this._hdWalletStore.disconnect();
+    }
+
 }

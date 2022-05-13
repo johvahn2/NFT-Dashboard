@@ -8,7 +8,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { ConnectionStore, Wallet, WalletStore } from '@heavy-duty/wallet-adapter';
 import { PhantomWalletName } from '@solana/wallet-adapter-wallets';
-import { IWallet, WalletService } from '@core/services/wallet.service';
+import {  WalletService } from '@core/services/wallet.service';
 
 @Component({
   selector: 'vertical-layout',
@@ -20,15 +20,15 @@ export class VerticalLayoutComponent implements OnInit, OnDestroy {
   coreConfig: any;
 
   // Wallet
-  readonly connection$ = this._hdConnectionStore.connection$;
-  readonly wallets$ = this._hdWalletStore.wallets$;
-  readonly wallet$ = this._hdWalletStore.wallet$;
-  readonly walletName$ = this.wallet$.pipe(
-    map((wallet) => wallet?.adapter.name || null)
-  );
+  // readonly connection$ = this._hdConnectionStore.connection$;
+  // readonly wallets$ = this._hdWalletStore.wallets$;
+  // readonly wallet$ = this._hdWalletStore.wallet$;
+  // readonly walletName$ = this.wallet$.pipe(
+  //   map((wallet) => wallet?.adapter.name || null)
+  // );
 
-  readonly connected$ = this._hdWalletStore.connected$;
-  readonly publicKey$ = this._hdWalletStore.publicKey$;
+  // readonly connected$ = this._hdWalletStore.connected$;
+  // readonly publicKey$ = this._hdWalletStore.publicKey$;
 
   @ViewChild('walletModal', { static: true }) walletModal: ElementRef;
   walletLoading: boolean = false;
@@ -68,16 +68,11 @@ export class VerticalLayoutComponent implements OnInit, OnDestroy {
 
     
 
-    this.connected$.pipe(takeUntil(this._unsubscribeAll)).subscribe(res =>{
+    WalletService.connected$.pipe(takeUntil(this._unsubscribeAll)).subscribe(res =>{
       if(!res){
         this.WalletModal();
       } else {
         this.modalService.dismissAll();
-        this._hdWalletStore.wallet$.pipe(takeUntil(this._unsubscribeAll)).subscribe(res =>{
-          // console.log(res.adapter.name);
-          // console.log(res.adapter.publicKey.toString());
-        });
-
       }
 
 
@@ -99,6 +94,7 @@ export class VerticalLayoutComponent implements OnInit, OnDestroy {
     this._hdWalletStore.disconnect().subscribe();
   }
 
+
   WalletModal(){
     this.modalService.open(this.walletModal, {
       backdrop: 'static',
@@ -114,12 +110,4 @@ export class VerticalLayoutComponent implements OnInit, OnDestroy {
   
   }
 
-  WalletModalInit(){
-    this.modalService.open(this.walletModal, {
-      // backdrop: 'static',
-      keyboard: false,
-      centered: true,
-      windowClass: 'modal modal-primary'
-    });
-  }
 }

@@ -20,16 +20,8 @@ import { locale as menuGerman } from 'app/menu/i18n/de';
 import { locale as menuPortuguese } from 'app/menu/i18n/pt';
 
 
-//Solana Wallet
-import { ConnectionStore, WalletStore } from '@heavy-duty/wallet-adapter';
-import {
-  PhantomWalletAdapter,
-  PhantomWalletName,
-  SlopeWalletAdapter,
-  SolflareWalletAdapter,
-  SolongWalletAdapter,
-} from '@solana/wallet-adapter-wallets';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { WalletService } from '@core/services/wallet.service';
 
 @Component({
   selector: 'app-root',
@@ -70,8 +62,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private _coreMenuService: CoreMenuService,
     private _coreTranslationService: CoreTranslationService,
     private _translateService: TranslateService,
-    private readonly _hdConnectionStore: ConnectionStore,
-    private readonly _hdWalletStore: WalletStore,
+    private walletService: WalletService,
     private modalService: NgbModal
   ) {
     // Get the application main menu
@@ -106,7 +97,7 @@ export class AppComponent implements OnInit, OnDestroy {
     // Init wave effect (Ripple effect)
     Waves.init();
 
-    this.WalletInit();
+    this.walletService.init();
 
     // Subscribe to config changes
     this._coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
@@ -281,15 +272,5 @@ export class AppComponent implements OnInit, OnDestroy {
   /**
    * Wallet Connection
    */
-
-  WalletInit(){
-    this._hdConnectionStore.setEndpoint('https://api.devnet.solana.com');
-    this._hdWalletStore.setAdapters([
-      new PhantomWalletAdapter(),
-      new SlopeWalletAdapter(),
-      new SolflareWalletAdapter(),
-      new SolongWalletAdapter(),
-    ]);
-  }
 
 }

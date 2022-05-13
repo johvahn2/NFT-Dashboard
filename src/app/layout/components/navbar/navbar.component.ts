@@ -17,6 +17,7 @@ import { coreConfig } from 'app/app-config';
 import { Router } from '@angular/router';
 
 import { ConnectionStore, Wallet, WalletStore } from '@heavy-duty/wallet-adapter';
+import { WalletService } from '@core/services/wallet.service';
 
 @Component({
   selector: 'app-navbar',
@@ -27,7 +28,7 @@ import { ConnectionStore, Wallet, WalletStore } from '@heavy-duty/wallet-adapter
 export class NavbarComponent implements OnInit, OnDestroy {
 
   walletAddress = "";
-  readonly publicKey$ = this._hdWalletStore.publicKey$;
+  readonly publicKey$ = WalletService.publicKey$;
 
   public horizontalMenu: boolean;
   public hiddenMenu: boolean;
@@ -90,8 +91,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private _coreSidebarService: CoreSidebarService,
     private _mediaObserver: MediaObserver,
     public _translateService: TranslateService,
-    private readonly _hdConnectionStore: ConnectionStore,
-    private readonly _hdWalletStore: WalletStore,
+    private walletService: WalletService,
   ) {
     this._authenticationService.currentUser.subscribe(x => (this.currentUser = x));
 
@@ -239,7 +239,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   disconnectWallet(){
-    this._hdWalletStore.disconnect().subscribe();
+   this.walletService.disconnect().subscribe();
   }
 
 
