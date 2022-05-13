@@ -8,6 +8,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CoreCommonModule } from '@core/common.module';
 
 import { DashboardComponent } from './dashboard.component';
+import { DashboardService } from './dashboard.service';
 
 
 // routing
@@ -30,6 +31,7 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule, 
     CoreCommonModule
-  ]
+  ],
+  providers: [DashboardService],
 })
 export class DashboardModule { }

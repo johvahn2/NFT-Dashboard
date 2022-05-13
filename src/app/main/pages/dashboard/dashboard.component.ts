@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { WalletService } from '@core/services/wallet.service';
+import { DashboardService } from './dashboard.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,10 +10,11 @@ import { WalletService } from '@core/services/wallet.service';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor(private modalService: NgbModal) { }
+  constructor(private modalService: NgbModal, private dashboardService: DashboardService) { }
 
   ngOnInit(): void {
     WalletService.nfts.subscribe( res => console.log(res));
+
   }
 
 }
