@@ -2,6 +2,9 @@
     background-color: #5cb3fd;
 }
 
+.x-scroll{
+    overflow-x: auto;
+}
 
 .item-title{
     font-size: 16px;
@@ -27,4 +30,45 @@
 .item-desc{
     font-size: 14px;
     font-weight: 400;
+}
+
+
+
+.chart-radio {
+    display: table;
+    margin-left: auto;
+}
+
+
+
+.nft-sale{
+    margin-top: 2.14rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .sale-title{
+        font-weight: 600;
+    }
+
+    .sale-price{
+        font-weight: 600;
+    }
+}
+
+
+.nft-social{
+    margin-top: 2.14rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 500px;
+
+    .social-title{
+        font-weight: 600;
+    }
+
+    .social-comment{
+        font-weight: 600;
+    }
 }

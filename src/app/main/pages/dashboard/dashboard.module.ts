@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 import { CoreCommonModule } from '@core/common.module';
 
@@ -30,6 +31,7 @@ const routes: Routes = [
     NgbModule, 
     FormsModule,
     ReactiveFormsModule, 
+    NgApexchartsModule,
     CoreCommonModule
   ],
   providers: [DashboardService],
