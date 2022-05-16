@@ -1,3 +1,30 @@
 .light-blue-backdrop {
     background-color: #5cb3fd;
 }
+
+
+.item-title{
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.item-content{
+    color: #091b3d;
+    font-size: 42px;
+    font-weight: 500;
+
+    align-items: flex-end;
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+
+    span {
+        font-size: 22px;
+        padding-bottom: 7px;
+    }
+}
+
+.item-desc{
+    font-size: 14px;
+    font-weight: 400;
+}
