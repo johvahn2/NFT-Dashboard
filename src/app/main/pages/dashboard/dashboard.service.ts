@@ -14,7 +14,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
 
 
-const API_URL = environment.magicEdenAPI;
+const API_URL = environment.APP_BASE_URL;
 const collectionName = 'runcible';
 
 @Injectable()
@@ -27,15 +27,24 @@ export class DashboardService {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Headers': 'Content-Type',
-      'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT'
+      'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
+      'Authorization': `Bearer ${environment.token}`
     });
 
-    getStatus(): Observable<any> {
-		return this.http.get<any>(API_URL+`/collections/${collectionName}/stats`,{headers:this.headers});
+    getOverview(): Observable<any> {
+		return this.http.get<any>(API_URL+`/get_overview`,{headers:this.headers});
     }
 
-    getActivities(): Observable<any> {
-		return this.http.get<any>(API_URL+`/collections/${collectionName}/activities?offset=0&limit=20`);
+    getRevenueOverview(): Observable<any> {
+		return this.http.get<any>(API_URL+`/get_revenue_overview`,{headers:this.headers});
+    }
+
+    getRecentSales(): Observable<any> {
+      return this.http.get<any>(API_URL+`/get_recent_sales`,{headers:this.headers});
+    }
+
+    getTwitterFeed(): Observable<any> {
+      return this.http.get<any>(API_URL+`/get_twitter_feed`,{headers:this.headers});
     }
 
 }

@@ -56,7 +56,10 @@ export class DashboardComponent implements OnInit {
   public apexLineChart: Partial<ChartOptions>;
   public isMenuToggled = false;
 
-
+  overview = {floor: 0, totalVolume: 0, highSale: 0};
+  revenueOverview = {lastDay: 0, lastWeek: 0, lastMonth: 0, lastYear: 0, all: 0};
+  recentSales: any[] = [];
+  twitterFeed: any[] = [];
 
   constructor(private modalService: NgbModal, private dashboardService: DashboardService) {
       
@@ -133,8 +136,46 @@ export class DashboardComponent implements OnInit {
    }
 
   ngOnInit(): void {
+
     WalletService.nfts.subscribe( res => console.log(res));
 
+    // this.getData();
+
+
+  }
+
+
+  getData(){
+    this.dashboardService.getOverview().subscribe(res => {
+      if(res.data){
+        this.overview.floor = res.data.floor;
+        this.overview.totalVolume = res.data.totalVolume;
+        this.overview.highSale = res.data.ceiling;
+      }
+    });
+
+
+    this.dashboardService.getRevenueOverview().subscribe(res => {
+      if(res.data){
+        this.revenueOverview.lastDay = res.data.lastDay;
+        this.revenueOverview.lastWeek = res.data.lastWeek;
+        this.revenueOverview.lastMonth = res.data.lastMonth;
+        this.revenueOverview.lastYear = res.data.lastYear;
+        this.revenueOverview.all = res.data.all;
+      }
+    });
+
+    this.dashboardService.getRecentSales().subscribe(res => {
+      if(res.data){
+        this.recentSales = res.data;
+      }
+    });
+
+    this.dashboardService.getTwitterFeed().subscribe(res => {
+      if(res.data){
+        this.twitterFeed = res.data;
+      }
+    });
   }
 
 }

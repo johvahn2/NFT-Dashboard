@@ -48,7 +48,7 @@ const appRoutes: Routes = [
       relativeLinkResolution: 'legacy'
     }),
     TranslateModule.forRoot(),
-    HdWalletAdapterModule.forRoot({ autoConnect: true }),
+    HdWalletAdapterModule.forRoot({ autoConnect: false }),
 
     //NgBootstrap
     NgbModule,

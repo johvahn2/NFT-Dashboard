@@ -239,7 +239,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   disconnectWallet(){
-   this.walletService.disconnect().subscribe();
+   this.walletService.disconnect();
   }
 
 

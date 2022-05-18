@@ -6,7 +6,9 @@ export const environment = {
   production: false,
   hmr: false,
   apiUrl: 'http://localhost:4000',
-  magicEdenAPI: 'https://api-devnet.magiceden.dev/v2'
+  magicEdenAPI: 'https://api-devnet.magiceden.dev/v2',
+  APP_BASE_URL: "https://app.dazedducks.com/api/v1",
+  token: '4JgkeNSUCBhXRsjCVWoqf2QRnwQopGUkPbb552ZyVr2y6ZTt7aJnQcEyf5ycF3s7PLwDqZaMXie9gTxwN7MCtAop'
 };
 
 /*

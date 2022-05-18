@@ -9,6 +9,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConnectionStore, Wallet, WalletStore } from '@heavy-duty/wallet-adapter';
 import { PhantomWalletName } from '@solana/wallet-adapter-wallets';
 import {  WalletService } from '@core/services/wallet.service';
+import { WalletName } from '@solana/wallet-adapter-base';
 
 @Component({
   selector: 'vertical-layout',
@@ -105,9 +106,21 @@ export class VerticalLayoutComponent implements OnInit, OnDestroy {
     });
   }
 
-  walletConnect(){
-      this._hdWalletStore.selectWallet(PhantomWalletName);
+  async walletConnect(type: string){
+      let name: WalletName = null;
+
+      if(type == 'Phantom'){
+        name = PhantomWalletName;
+      } else {
+        console.log("Can not find valid wallet");
+      }
+
+      this._hdWalletStore.selectWallet(name);
+      
+      this.walletService.connect();
   
   }
+
+  
 
 }
