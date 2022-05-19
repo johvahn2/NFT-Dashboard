@@ -20,7 +20,7 @@
                 <div class="card">
                     <div class="card-header flex-column">
                       <h2 class="item-title">Total Volume Traded</h2>
-                      <h2 class="item-content font-weight-bolder mt-1">{{overview.totalVolume}}<span>Sol</span></h2>
+                      <h2 class="item-content font-weight-bolder mt-1">{{overview.totalVolume | shortNumber : 1}}<span>Sol</span></h2>
                       <p class="item-desc">($5,793,305.36 USD )</p>
                     </div>
                 </div>                
@@ -134,7 +134,7 @@
                 <div class="card">
                     <div class="card-header flex-column">
                         <h2 class="item-title">Last 24 hrs</h2>
-                        <h2 class="item-content font-weight-bolder mt-1">{{revenueOverview.lastDay}} <span>Sol</span></h2>
+                        <h2 class="item-content font-weight-bolder mt-1">{{revenueOverview.lastDay | shortNumber : 2}} <span>Sol</span></h2>
                     </div>
                 </div>                
             </div>
@@ -142,7 +142,7 @@
                 <div class="card">
                     <div class="card-header flex-column">
                         <h2 class="item-title">Last 7 days</h2>
-                        <h2 class="item-content font-weight-bolder mt-1">{{revenueOverview.lastWeek}}<span>Sol</span></h2>
+                        <h2 class="item-content font-weight-bolder mt-1">{{revenueOverview.lastWeek | shortNumber : 2}}<span>Sol</span></h2>
                     </div>
                 </div>                
             </div>
@@ -150,7 +150,7 @@
                 <div class="card">
                     <div class="card-header flex-column">
                         <h2 class="item-title">Last 30 days</h2>
-                        <h2 class="item-content font-weight-bolder mt-1">{{revenueOverview.lastMonth}}<span>Sol</span></h2>
+                        <h2 class="item-content font-weight-bolder mt-1">{{revenueOverview.lastMonth | shortNumber : 1}}<span>Sol</span></h2>
                     </div>
                 </div>                
             </div>
@@ -160,7 +160,7 @@
                 <div class="card">
                     <div class="card-header flex-column">
                         <h2 class="item-title">Last year</h2>
-                        <h2 class="item-content font-weight-bolder mt-1">{{revenueOverview.lastYear}}<span>Sol</span></h2>
+                        <h2 class="item-content font-weight-bolder mt-1">{{revenueOverview.lastYear | shortNumber : 1}}<span>Sol</span></h2>
                     </div>
                 </div>                
             </div>
@@ -168,7 +168,7 @@
                 <div class="card">
                     <div class="card-header flex-column">
                         <h2 class="item-title">Since launch</h2>
-                        <h2 class="item-content font-weight-bolder mt-1">{{revenueOverview.all}}<span>Sol</span></h2>
+                        <h2 class="item-content font-weight-bolder mt-1">{{revenueOverview.all | shortNumber : 1}}<span>Sol</span></h2>
                     </div>
                 </div>                
             </div>

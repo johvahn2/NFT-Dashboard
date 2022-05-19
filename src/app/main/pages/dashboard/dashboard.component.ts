@@ -139,7 +139,12 @@ export class DashboardComponent implements OnInit {
 
     WalletService.nfts.subscribe( res => console.log(res));
 
-    // this.getData();
+    WalletService.Token.subscribe(token => {
+      if(!token) return;
+      this.getData();
+
+    })
+
 
 
   }

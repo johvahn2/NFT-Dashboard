@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
 import { ConnectionStore, WalletStore } from "@heavy-duty/wallet-adapter";
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, from, lastValueFrom, Observable, of, Subject } from 'rxjs';
 import base58 from 'bs58';
-import { concatMap, first, map } from 'rxjs/operators';
+import { concatMap, first, map, takeUntil } from 'rxjs/operators';
 import {
   PhantomWalletAdapter,
   PhantomWalletName,
@@ -27,7 +27,12 @@ const API_URL = environment.APP_BASE_URL;
 
     public static connected$ = of(false);
     public static publicKey$ = new Observable<PublicKey>();
+
+    public static _publicKey = new BehaviorSubject(null);
+    public static Token = new BehaviorSubject(null);
     public static nfts = new BehaviorSubject(null);
+
+    _unsubscribeAll: Subject<void> = new Subject();
 
     headers = new HttpHeaders({
       'Content-Type': 'text/html; charset=utf-8',
@@ -43,6 +48,11 @@ const API_URL = environment.APP_BASE_URL;
     ){
       WalletService.connected$ = this._hdWalletStore.connected$;
       WalletService.publicKey$ = this._hdWalletStore.publicKey$;
+
+      WalletService.publicKey$.subscribe(res => {
+        if(!res) return;
+        WalletService._publicKey.next(res);
+      })
     }
 
     
@@ -59,50 +69,32 @@ const API_URL = environment.APP_BASE_URL;
       
 
     }
-    
-    onSignMessage(message) {
-
-      const signMessage$ = this._hdWalletStore.signMessage(
-        new TextEncoder().encode(message)
-      );
   
-      if (!signMessage$) {
-        return console.error(new Error('Sign message method is not defined'));
-      }
-
-      return signMessage$;
-    }
-
 
 
 
     connect(){
-      this._hdWalletStore.connect().subscribe(res => {
-        WalletService.publicKey$.subscribe(async  key => {
+      this._hdWalletStore.connect().subscribe(async res => {
+        console.log('Start Connecting');
 
-        //Hand Shake
-         let _sign:any = await this.handshake(key);
+        let key = WalletService._publicKey.getValue();
+        if(!key) return;
 
-         if(_sign.data){
+        // Get HandShake
+        let _sign:any = await this.handshake(key).catch((err)=> {this.disconnect()});
 
-           //Signing
-          let signMessage =  this.onSignMessage(_sign.data);
-          if(signMessage){
-            signMessage.subscribe(async res => {
-              localStorage.setItem('token',_sign.data)
-              let sign = bs58.encode(res);
-              
-              //Get Login Token
-              let token = await this.login(key,sign,_sign.data);
+        if(!_sign?.data) return;
 
-              console.log(token);
-            })
-          }
+          //Prompt Signing
+          this.onSignMessage(_sign.data).subscribe({next: async (res) => {
+            let sign = bs58.encode(res);
 
-         }
-          
+            //Get Login Token
+            let token:any = await this.login(key,sign,_sign.data);
+            WalletService.Token.next(token.data);
 
-        });
+          }, error: (err) => this.disconnect()});
+
       });
     }
 
@@ -125,7 +117,35 @@ const API_URL = environment.APP_BASE_URL;
       });
     }
 
+
+    onSignMessage(message) : Observable<Uint8Array> | Observable<null> {
+      let prom = new Promise<Uint8Array>((resolve, reject) => {
+        const signMessage$ = this._hdWalletStore.signMessage(
+          new TextEncoder().encode(message)
+        );
+  
+        if (!signMessage$) { //error after first sign in attempt
+          console.error(new Error('Sign message method is not defined'));
+          reject(null);
+        }
+
+
+        signMessage$.pipe(first()).subscribe({next:(signature) => {
+          resolve(signature);
+        }, error: (err) => {
+          this.disconnect();
+          reject(err);
+        }});
+
+      });
+
+      return from(prom);
+
+    }
+
     disconnect(){
+      this._unsubscribeAll.next();
+      this._unsubscribeAll.complete();
       return this._hdWalletStore.disconnect().subscribe();
     }
 

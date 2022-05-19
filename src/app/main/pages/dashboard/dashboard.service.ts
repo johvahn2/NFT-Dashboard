@@ -12,6 +12,7 @@ import { environment } from 'environments/environment';
 
 import { BehaviorSubject, Observable } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
+import { WalletService } from '@core/services/wallet.service';
 
 
 const API_URL = environment.APP_BASE_URL;
@@ -27,24 +28,27 @@ export class DashboardService {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Headers': 'Content-Type',
-      'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
-      'Authorization': `Bearer ${environment.token}`
+      'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT'
     });
 
     getOverview(): Observable<any> {
-		return this.http.get<any>(API_URL+`/get_overview`,{headers:this.headers});
+    let header = this.headers.append('Authorization', `Bearer ${WalletService.Token.getValue()}`);
+		return this.http.get<any>(API_URL+`/get_overview`,{headers:header});
     }
 
     getRevenueOverview(): Observable<any> {
-		return this.http.get<any>(API_URL+`/get_revenue_overview`,{headers:this.headers});
+    let header = this.headers.append('Authorization', `Bearer ${WalletService.Token.getValue()}`);
+		return this.http.get<any>(API_URL+`/get_revenue_overview`,{headers:header});
     }
 
     getRecentSales(): Observable<any> {
-      return this.http.get<any>(API_URL+`/get_recent_sales`,{headers:this.headers});
+      let header = this.headers.append('Authorization', `Bearer ${WalletService.Token.getValue()}`);
+      return this.http.get<any>(API_URL+`/get_recent_sales`,{headers:header});
     }
 
     getTwitterFeed(): Observable<any> {
-      return this.http.get<any>(API_URL+`/get_twitter_feed`,{headers:this.headers});
+      let header = this.headers.append('Authorization', `Bearer ${WalletService.Token.getValue()}`);
+      return this.http.get<any>(API_URL+`/get_twitter_feed`,{headers:header});
     }
 
 }
