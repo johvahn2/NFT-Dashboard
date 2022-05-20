@@ -183,67 +183,22 @@
 
                 <div class="col-12">
                     <div class="card">
-                    <div class="card-body">
-                        <div class="nft-sale">
-                            <div class="media">
-                                <img src="assets/images/avatars/NFT365.gif" class="rounded mr-1" height="50" alt="Duck 365" />
-                                
-                                <div class="align-self-center mb-0">
-                                    <h6 class="sale-title">Dazed Ducks #365 sold</h6>
-                                    <span class="sale-date">1 day ago</span>
-                                </div>
+                        <div class="card-body">
+                            <div class="nft-sale" *ngFor="let sale of recentSales; let i = index;">
+                                <div class="media">
+                                    <img [src]="sale?.duckInfo?.original_image" class="rounded mr-1" height="50" [alt]="sale?.duckInfo?.name" />
+                                    
+                                    <div class="align-self-center mb-0">
+                                        <h6 class="sale-title">Dazed Ducks <span>#{{sale?.duckInfo?.xnum}}</span> sold</h6>
+                                        <span class="sale-date">{{ getRelativeTime(sale?.blockTime) }}</span>
+                                    </div>
 
-                            </div>
-                            <div class="d-flex align-items-center">
-                                <div class="text-body-heading mr-1 sale-price">5.81 <span>sol</span></div>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <div class="text-body-heading mr-1 sale-price">{{numFormatter(sale?.total_amount / lamports_per_sol, -1)}} <span>sol</span></div>
+                                </div>
                             </div>
                         </div>
-
-                        <div class="nft-sale">
-                            <div class="media">
-                                <img src="assets/images/avatars/NFT365.gif" class="rounded mr-1" height="50" alt="Duck 365" />
-                                
-                                <div class="align-self-center mb-0">
-                                    <h6 class="sale-title">Dazed Ducks #365 sold</h6>
-                                    <span class="sale-date">1 day ago</span>
-                                </div>
-
-                            </div>
-                            <div class="d-flex align-items-center">
-                                <div class="text-body-heading mr-1 sale-price">5.81 <span>sol</span></div>
-                            </div>
-                        </div>
-
-                        <div class="nft-sale">
-                            <div class="media">
-                                <img src="assets/images/avatars/NFT365.gif" class="rounded mr-1" height="50" alt="Duck 365" />
-                                
-                                <div class="align-self-center mb-0">
-                                    <h6 class="sale-title">Dazed Ducks #365 sold</h6>
-                                    <span class="sale-date">1 day ago</span>
-                                </div>
-
-                            </div>
-                            <div class="d-flex align-items-center">
-                                <div class="text-body-heading mr-1 sale-price">5.81 <span>sol</span></div>
-                            </div>
-                        </div>
-
-                        <div class="nft-sale">
-                            <div class="media">
-                                <img src="assets/images/avatars/NFT365.gif" class="rounded mr-1" height="50" alt="Duck 365" />
-                                
-                                <div class="align-self-center mb-0">
-                                    <h6 class="sale-title">Dazed Ducks #365 sold</h6>
-                                    <span class="sale-date">1 day ago</span>
-                                </div>
-
-                            </div>
-                            <div class="d-flex align-items-center">
-                                <div class="text-body-heading mr-1 sale-price">5.81 <span>sol</span></div>
-                            </div>
-                        </div>
-                    </div>
                     </div>
                 </div>
             </div>
@@ -255,7 +210,24 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body x-scroll">
-                            <div class="nft-social">
+                            <div class="nft-social" *ngFor="let tweet of twitterFeed; let i = index;">
+                                <div class="media mr-5">
+                                    <a [href]="tweet.url" target="_blank">
+                                        <img [src]="tweet.profile_image_thumb" class="rounded mr-1" height="50" alt="" />
+                                        
+                                        <div class="align-self-center mb-0">
+                                            <h6 class="social-title">{{FormatStringSlice(tweet.name, 9)}}</h6>
+                                            <span class="social-date">{{tweet.username}}</span>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <div class="text-body-heading mr-1 social-comment">{{FormatStringSlice(tweet.text,90)}}</div>
+                                </div>
+                            </div>
+
+
+                            <!-- <div class="nft-social">
                                 <div class="media mr-5">
                                     <img src="assets/images/avatars/ava_placeholder.jpg" class="rounded mr-1" height="50" alt="Duck 365" />
                                     
@@ -300,23 +272,7 @@
                                 <div class="d-flex align-items-center">
                                     <div class="text-body-heading mr-1 social-comment">The #DazedDucks creator collection on Magic Eden now</div>
                                 </div>
-                            </div>
-
-
-                            <div class="nft-social">
-                                <div class="media mr-5">
-                                    <img src="assets/images/avatars/ava_placeholder.jpg" class="rounded mr-1" height="50" alt="Duck 365" />
-                                    
-                                    <div class="align-self-center mb-0">
-                                        <h6 class="social-title">DazedDucks...</h6>
-                                        <span class="social-date">@DazedDucks</span>
-                                    </div>
-
-                                </div>
-                                <div class="d-flex align-items-center">
-                                    <div class="text-body-heading mr-1 social-comment">The #DazedDucks creator collection on Magic Eden now</div>
-                                </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>

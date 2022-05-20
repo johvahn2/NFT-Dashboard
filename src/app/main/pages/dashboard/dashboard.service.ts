@@ -51,4 +51,14 @@ export class DashboardService {
       return this.http.get<any>(API_URL+`/get_twitter_feed`,{headers:header});
     }
 
+    getDuckInfo(hash): Observable<any> {
+      let header = this.headers.append('Authorization', `Bearer ${WalletService.Token.getValue()}`);
+      return this.http.get<any>(API_URL+`/get_duck_info/${hash}`,{headers:header});
+    }
+
+    getDucksInfo(mints): Observable<any[]> {
+      let header = this.headers.append('Authorization', `Bearer ${WalletService.Token.getValue()}`);
+      return this.http.post<any[]>(API_URL+`/get_ducks_info`,{ducks: mints},{headers:header});
+    }
+
 }

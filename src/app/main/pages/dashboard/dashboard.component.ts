@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { WalletService } from '@core/services/wallet.service';
 import { DashboardService } from './dashboard.service';
+import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import {
   ApexAxisChartSeries,
   ApexChart,
@@ -44,6 +45,15 @@ export interface ChartOptions {
   theme: ApexTheme;
 }
 
+const units = {
+  year  : 24 * 60 * 60  * 365,
+  month : 24 * 60 * 60  * 365/12,
+  day   : 24 * 60 * 60 ,
+  hour  : 60 * 60 ,
+  minute: 60 ,
+  second: 1
+}
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -55,6 +65,7 @@ export class DashboardComponent implements OnInit {
 
   public apexLineChart: Partial<ChartOptions>;
   public isMenuToggled = false;
+  public lamports_per_sol = LAMPORTS_PER_SOL;
 
   overview = {floor: 0, totalVolume: 0, highSale: 0};
   revenueOverview = {lastDay: 0, lastWeek: 0, lastMonth: 0, lastYear: 0, all: 0};
@@ -170,17 +181,104 @@ export class DashboardComponent implements OnInit {
       }
     });
 
-    this.dashboardService.getRecentSales().subscribe(res => {
+    this.dashboardService.getRecentSales().subscribe(async res => {
       if(res.data){
-        this.recentSales = res.data;
+        if (res.status === 0 && typeof res.data === 'object') {
+
+          const recentSales = await res.data.map(saleInfo => {
+            return new Promise((innerRes, innerRej) => {
+              this.dashboardService.getDuckInfo(saleInfo.mint).subscribe({next: res => {
+                innerRes({
+                  ...saleInfo,
+                  duckInfo: res.data
+                });
+              }, error: (err) => innerRej({code: 404})});
+            });
+
+
+          });
+
+          Promise.all(recentSales).then(res => {
+            this.recentSales = res;
+          });
+
+        } else {
+          this.recentSales = [];
+        }
       }
     });
 
     this.dashboardService.getTwitterFeed().subscribe(res => {
       if(res.data){
-        this.twitterFeed = res.data;
+        this.twitterFeed = res.data.slice(0,4);
+        console.log(res);
       }
     });
+  }
+
+  FormatStringSlice(text: string, end: number){
+
+    let s = text.slice(0,end);
+
+    return s + '...';
+
+  }
+
+  getRelativeTime(d, d2 = Date.now()){
+    let d1 = +new Date(d);
+
+    const elapsed = d1 - Math.floor(d2/1000)
+
+    for (let u in units){
+        if (Math.abs(elapsed) > units[u] || u === 'second'){
+            const num = Math.round(Math.abs(elapsed)/units[u])
+            return `${num} ${u}${num > 1 ? 's' : ''} ago`
+        }
+    }
+  }
+
+  numFormatter(num, digits?, one?) {
+    const lookup = [
+        { value: 1, symbol: "" },
+        { value: 1e3, symbol: "K" },
+        { value: 1e6, symbol: "M" },
+        { value: 1e9, symbol: "G" },
+        { value: 1e12, symbol: "T" },
+        { value: 1e15, symbol: "P" },
+        { value: 1e18, symbol: "E" }
+    ];
+    const rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
+    const item = lookup.slice().reverse().find(function(item) {
+        return num >= item.value;
+    });
+    if(digits === -1){
+        if(num < 10) return parseFloat(`${num}`.substring(0,6)).toLocaleString("en-US", {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 4,
+            useGrouping: false
+        })
+        else if(100 > num && num >= 10) return Number(num).toLocaleString("en-US", {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 3,
+            useGrouping: false
+        })
+        else if(1000 > num && num >= 100) return Number(num).toLocaleString("en-US", {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 2,
+            useGrouping: false
+        })
+        else {
+            if(num <= 9999) return Number(num).toLocaleString("en-US", {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 1,
+                useGrouping: false
+            })
+            return item ? (num / item.value).toFixed(1).replace(rx, "$1") + item.symbol : "0";
+        }
+    }
+    if(num < 1) return parseFloat(`${num}`.substring(0,4)).toFixed(digits)
+    else if(num <= 9999 && !one) return Number(num).toFixed(digits)
+    return item ? (num / item.value).toFixed(digits).replace(rx, "$1") + item.symbol : "0";
   }
 
 }
