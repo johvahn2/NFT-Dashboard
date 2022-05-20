@@ -21,8 +21,7 @@ install_dependencies:
     paths:
       - node_modules
   only:
-    - master
-    - tags
+    - main
 
 
 prod_build_image:
@@ -31,7 +30,7 @@ prod_build_image:
   tags:
     - docker
   only:
-    - master
+    - main
   script:
     - npm link @angular/cli@13.0.2
     - ng build --configuration production
@@ -48,22 +47,6 @@ prod_build_image:
 
 
 
-stage_deploy:
-  stage: deploy
-  tags:
-    - docker
-  environment: Staging
-  before_script:
-    - apt-get update -qq
-    - apt-get install -y -qq rsync && apt-get install -y -qq sshpass
-  script:
-    - echo "Staging Running"
-    - sshpass -V
-    - sshpass -e rsync -vvvurz --progress -e 'ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' dist/ root@sharefold.com:/var/www/HesseConsole/STAGING/
-  only:
-    - master
-
-
 prod_deploy:
   stage: deploy
   tags:
@@ -78,6 +61,6 @@ prod_deploy:
     - sshpass -e rsync -vvvurz --progress -e 'ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' dist/ root@sharefold.com:/var/www/DD-Demo/
 
   only:
-    - master
+    - main
 
 
