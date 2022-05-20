@@ -211,16 +211,14 @@
                     <div class="card">
                         <div class="card-body x-scroll">
                             <div class="nft-social" *ngFor="let tweet of twitterFeed; let i = index;">
-                                <div class="media mr-5">
-                                    <a [href]="tweet.url" target="_blank">
-                                        <img [src]="tweet.profile_image_thumb" class="rounded mr-1" height="50" alt="" />
-                                        
-                                        <div class="align-self-center mb-0">
-                                            <h6 class="social-title">{{FormatStringSlice(tweet.name, 9)}}</h6>
-                                            <span class="social-date">{{tweet.username}}</span>
-                                        </div>
-                                    </a>
-                                </div>
+                                <a [href]="tweet.url" target="_blank" class="media mr-5">
+                                    <img [src]="tweet.profile_image_thumb" class="rounded mr-1" height="50" alt="" />
+                                    
+                                    <div class="align-self-center mb-0">
+                                        <h6 class="social-title">{{FormatStringSlice(tweet.name, 9)}}</h6>
+                                        <span class="social-date">{{tweet.username}}</span>
+                                    </div>
+                                </a>
                                 <div class="d-flex align-items-center">
                                     <div class="text-body-heading mr-1 social-comment">{{FormatStringSlice(tweet.text,90)}}</div>
                                 </div>

@@ -210,7 +210,7 @@ export class DashboardComponent implements OnInit {
 
     this.dashboardService.getTwitterFeed().subscribe(res => {
       if(res.data){
-        this.twitterFeed = res.data.slice(0,4);
+        this.twitterFeed = res.data.slice(0,6);
         console.log(res);
       }
     });
