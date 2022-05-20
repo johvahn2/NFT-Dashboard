@@ -1,66 +1,66 @@
-variables:
-  SSHPASS: "$USER_PASS"
+# variables:
+#   SSHPASS: "$USER_PASS"
 
 
-stages:
-  - dependencies
-  - build
-  - deploy
+# stages:
+#   - dependencies
+#   - build
+#   - deploy
 
-install_dependencies:
-  image: node:12-alpine
-  stage: dependencies
-  tags:
-    - docker
-  script:
-    - npm install
-  cache:
-    key:
-      files:
-        - package-lock.json
-    paths:
-      - node_modules
-  only:
-    - main
-
-
-prod_build_image:
-  image: node:12-alpine
-  stage: build
-  tags:
-    - docker
-  only:
-    - main
-  script:
-    - npm link @angular/cli@13.0.2
-    - ng build --configuration production
-  artifacts:
-    paths:
-      - $CI_PROJECT_DIR/dist
-  cache:
-    key:
-      files:
-        - package-lock.json
-    paths:
-      - node_modules
-    policy: pull
+# install_dependencies:
+#   image: node:12-alpine
+#   stage: dependencies
+#   tags:
+#     - docker
+#   script:
+#     - npm install
+#   cache:
+#     key:
+#       files:
+#         - package-lock.json
+#     paths:
+#       - node_modules
+#   only:
+#     - main
 
 
+# prod_build_image:
+#   image: node:12-alpine
+#   stage: build
+#   tags:
+#     - docker
+#   only:
+#     - main
+#   script:
+#     - npm link @angular/cli@13.0.2
+#     - ng build --configuration production
+#   artifacts:
+#     paths:
+#       - $CI_PROJECT_DIR/dist
+#   cache:
+#     key:
+#       files:
+#         - package-lock.json
+#     paths:
+#       - node_modules
+#     policy: pull
 
-prod_deploy:
-  stage: deploy
-  tags:
-    - docker
-  environment: Production
-  before_script:
-    - apt-get update -qq
-    - apt-get install -y -qq rsync && apt-get install -y -qq sshpass
-  script:
-    - echo "Deploying Running"
-    - sshpass -V
-    - sshpass -e rsync -vvvurz --progress -e 'ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' dist/ root@sharefold.com:/var/www/DD-Demo/
 
-  only:
-    - main
+
+# prod_deploy:
+#   stage: deploy
+#   tags:
+#     - docker
+#   environment: Production
+#   before_script:
+#     - apt-get update -qq
+#     - apt-get install -y -qq rsync && apt-get install -y -qq sshpass
+#   script:
+#     - echo "Deploying Running"
+#     - sshpass -V
+#     - sshpass -e rsync -vvvurz --progress -e 'ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' dist/ root@sharefold.com:/var/www/DD-Demo/
+
+#   only:
+#     - main
 
 
