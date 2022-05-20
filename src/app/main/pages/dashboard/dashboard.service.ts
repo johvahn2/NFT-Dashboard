@@ -61,4 +61,14 @@ export class DashboardService {
       return this.http.post<any[]>(API_URL+`/get_ducks_info`,{ducks: mints},{headers:header});
     }
 
+    getRevenueOverTime(duration): Observable<any> {
+      let header = this.headers.append('Authorization', `Bearer ${WalletService.Token.getValue()}`);
+      return this.http.get<any>(API_URL+`/get_revenue_over_time/${duration}`,{headers:header});
+    }
+
+    getConfig(): Observable<any>{
+      let header = this.headers.append('Authorization', `Bearer ${WalletService.Token.getValue()}`);
+      return this.http.get<any>(API_URL+`/get_config`,{headers:header});
+    }
+
 }

@@ -71,6 +71,10 @@ export class DashboardComponent implements OnInit {
   revenueOverview = {lastDay: 0, lastWeek: 0, lastMonth: 0, lastYear: 0, all: 0};
   recentSales: any[] = [];
   twitterFeed: any[] = [];
+  config = null;
+
+
+  chartPeriod = 30;
 
   constructor(private modalService: NgbModal, private dashboardService: DashboardService) {
       
@@ -78,11 +82,11 @@ export class DashboardComponent implements OnInit {
       this.apexLineChart = {
         series: [
           {
-            data: [280, 200, 220, 180, 270, 250, 70, 90, 200, 150, 160, 100, 150, 100, 50]
+            data: []
           }
         ],
         chart: {
-          height: 400,
+          height: 500,
           type: 'line',
           zoom: {
             enabled: false
@@ -99,36 +103,21 @@ export class DashboardComponent implements OnInit {
           }
         },
         markers: {
+          size: 0,
           strokeWidth: 7,
           strokeOpacity: 1,
           strokeColors: [colors.solid.white],
           colors: [colors.solid.warning]
         },
-        colors: [colors.solid.warning],
+        colors: [colors.solid.primary],
         dataLabels: {
           enabled: false
         },
         stroke: {
-          curve: 'straight'
+          curve: 'smooth'
         },
         xaxis: {
-          categories: [
-            '7/12',
-            '8/12',
-            '9/12',
-            '10/12',
-            '11/12',
-            '12/12',
-            '13/12',
-            '14/12',
-            '15/12',
-            '16/12',
-            '17/12',
-            '18/12',
-            '19/12',
-            '20/12',
-            '21/12'
-          ]
+          categories: []
         },
         tooltip: {
           custom: function (data) {
@@ -136,7 +125,7 @@ export class DashboardComponent implements OnInit {
               '<div class="px-1 py-50">' +
               '<span>' +
               data.series[data.seriesIndex][data.dataPointIndex] +
-              '%</span>' +
+              ' sol</span>' +
               '</div>'
             );
           }
@@ -148,11 +137,11 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
 
-    WalletService.nfts.subscribe( res => console.log(res));
+    // WalletService.nfts.subscribe( res => console.log(res));
 
     WalletService.Token.subscribe(token => {
       if(!token) return;
-      this.getData();
+      this.getConfig();
 
     })
 
@@ -160,6 +149,13 @@ export class DashboardComponent implements OnInit {
 
   }
 
+  getConfig(){
+    this.dashboardService.getConfig().subscribe(res => {
+      this.config = res.data;
+      this.getData();
+      this.chartData();
+    })
+  }
 
   getData(){
     this.dashboardService.getOverview().subscribe(res => {
@@ -211,11 +207,47 @@ export class DashboardComponent implements OnInit {
     this.dashboardService.getTwitterFeed().subscribe(res => {
       if(res.data){
         this.twitterFeed = res.data.slice(0,6);
-        console.log(res);
       }
     });
   }
 
+
+
+  chartData(){
+    this.dashboardService.getRevenueOverTime(this.chartPeriod).subscribe(res => {
+      let chartData = res.data.community;
+      console.log(chartData);
+
+      let labels = [];
+      let val = [];
+
+      for (const data of chartData) {
+
+          labels.push(data.label);
+          val.push(Math.round(data.val));
+      }
+
+      this.apexLineChart.series = [{
+        data: val
+      }];
+      this.apexLineChart.xaxis = {
+        categories: labels
+      }
+
+      
+
+      console.log(this.apexLineChartRef);
+
+    })
+  }
+
+  chartPeriodChg(_event){
+    console.log(this.chartPeriod);
+    this.chartData();
+
+  }
+
+  //HELPERS
   FormatStringSlice(text: string, end: number){
 
     let s = text.slice(0,end);
@@ -279,6 +311,12 @@ export class DashboardComponent implements OnInit {
     if(num < 1) return parseFloat(`${num}`.substring(0,4)).toFixed(digits)
     else if(num <= 9999 && !one) return Number(num).toFixed(digits)
     return item ? (num / item.value).toFixed(digits).replace(rx, "$1") + item.symbol : "0";
+  }
+
+  convertSol(sol){
+
+    return parseFloat(sol) * parseFloat(this.config?.conversionRates[0].price);
+
   }
 
 }
